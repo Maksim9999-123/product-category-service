@@ -1,16 +1,15 @@
 package com.example.productcategoryservice.endpoint;
-import com.example.productcategoryservice.converter.CategoryConverter;
+
 import com.example.productcategoryservice.dto.CategoryResponseDto;
 import com.example.productcategoryservice.dto.CreateCategoryDto;
 import com.example.productcategoryservice.entity.Category;
 import com.example.productcategoryservice.mapper.CategoryMapper;
-import com.example.productcategoryservice.repository.CategoryRepository;
+
 import com.example.productcategoryservice.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,11 +39,17 @@ public class CategoryEndPoint {
         return ResponseEntity.ok(saveCategory);
     }
 
-    @PutMapping("/categories")
-    public ResponseEntity<Category> updatecategory(@RequestBody Category category){
+    @PutMapping("/category/{id}")
+    public ResponseEntity<Category> updatecategory(@PathVariable int id, @RequestBody Category category){
+        Optional<Category> categoryById = categoryService.findCategoryById(id);
         if(category.getId() == 0){
             return ResponseEntity.badRequest().build();
         }
+        Category newCategory = categoryById.get();
+        Category.builder()
+                .name(category.getName())
+                .build();
+        categoryService.updataCategory(newCategory);
         categoryService.updataCategory(category);
         return ResponseEntity.ok(category);
     }
