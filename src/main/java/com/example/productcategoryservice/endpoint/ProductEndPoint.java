@@ -16,18 +16,18 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/product")
 public class ProductEndPoint {
     private final ProductService productService;
 
     private final ProductMapper productMapper;
 
-    @GetMapping("/products")
+    @GetMapping("/all")
     public List<ProductResponseDto> getAllProducts(){
-
         return productMapper.map(productService.findAllProduct());
     }
 
-    @GetMapping("/product/{id}")
+    @GetMapping("/getBy/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable("id") int id){
         Optional<Product> byId = productService.findProductById(id);
         if(byId.isEmpty()){
@@ -36,13 +36,13 @@ public class ProductEndPoint {
         return ResponseEntity.ok(byId.get());
     }
 
-    @PostMapping("/product")
+    @PostMapping("/reate")
     public ResponseEntity<?> createProduct(@RequestBody CreateProductDto createProductDto){
         Product saveProduct = productService.createProduct(productMapper.map(createProductDto));
         return ResponseEntity.ok(saveProduct);
     }
 
-    @PutMapping("/products")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Product> updateProduct(@RequestBody Product product){
         if(product.getId() == 0){
             return ResponseEntity.badRequest().build();
@@ -51,7 +51,7 @@ public class ProductEndPoint {
         return ResponseEntity.ok(product);
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProductById(@PathVariable("id") int id){
         productService.deleteById(id);
         return ResponseEntity.notFound().build();
