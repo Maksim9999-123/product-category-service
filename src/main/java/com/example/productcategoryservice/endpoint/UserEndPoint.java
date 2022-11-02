@@ -7,13 +7,11 @@ import com.example.productcategoryservice.entity.Role;
 import com.example.productcategoryservice.entity.User;
 import com.example.productcategoryservice.mapper.UserMapper;
 import com.example.productcategoryservice.repository.UserRepository;
-import com.example.productcategoryservice.service.UserService;
 import com.example.productcategoryservice.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,8 +28,6 @@ public class UserEndPoint {
     private final PasswordEncoder passwordEncoder;
 
     private final JwtTokenUtil jwtTokenUtil;
-
-    private final UserService userService;
 
     @PostMapping("/user")
     public ResponseEntity<?> register(@RequestBody CreateUserDto createUserDto){
